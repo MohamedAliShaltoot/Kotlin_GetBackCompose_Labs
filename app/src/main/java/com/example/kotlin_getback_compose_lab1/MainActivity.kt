@@ -1,10 +1,13 @@
 package com.example.kotlin_getback_compose_lab1
 
+import android.R.attr.onClick
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -84,9 +87,14 @@ class MainActivity : ComponentActivity() {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column {
+            Column(modifier = Modifier.clickable(
+                onClick={
+                 Toast.makeText(this@MainActivity,"you clicked ${item.title}",Toast.LENGTH_SHORT).show()
+                }
+            )) {
                 Text(
                     text = item.title,
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
                     text = item.subtitle,
