@@ -23,27 +23,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_getback_compose_lab1.data_class.ListItem
 
 
 class MainActivity : ComponentActivity() {
     val items = listOf(
-        ListItem("Android", "Jetpack Compose", R.drawable.ic_launcher_background),
-        ListItem("Kotlin", "Modern Language", R.drawable.ic_launcher_background),
-        ListItem("Mohamed", "Android Developer ", R.drawable.ic_launcher_background),
-        ListItem("Ahemd", "Flutter Developer", R.drawable.ic_launcher_background),
-        ListItem("Nada", "Flutter Developer", R.drawable.ic_launcher_background),
-        ListItem("Ahmed", "Flutter Developer", R.drawable.ic_launcher_background),
-        ListItem("Flutter", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background),
+        ListItem("Android", "Jetpack Compose", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Kotlin", "Modern Language", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Mohamed", "Android Developer ", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Ahemd", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Nada", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Ahmed", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Flutter", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
+        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +76,7 @@ class MainActivity : ComponentActivity() {
 
             Image(
                 painter = painterResource(id = item.imageRes),
-                contentDescription = "person",
+                contentDescription = item.contentDescription,
                 modifier = Modifier
                     .size(60.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -94,5 +95,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    @Preview(showBackground = true)
+    @Composable
+
+    fun PreviewMyLazyList() {
+        MyLazyList()
+    }
 }
+
+
 

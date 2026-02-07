@@ -5,6 +5,8 @@ import androidx.annotation.DrawableRes
 data class ListItem(
     val title: String,
     val subtitle: String,
-  @DrawableRes  val imageRes: Int
+  @DrawableRes  val imageRes: Int,
+    val contentDescription: String,
+
 )
 
