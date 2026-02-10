@@ -29,57 +29,83 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kotlin_getback_compose_lab1.data_class.ListItem
+import com.example.kotlin_getback_compose_lab1.data_class.Product
 
+
+
+import androidx.compose.runtime.*
+
+import androidx.work.*
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : ComponentActivity() {
-    val items = listOf(
-        ListItem("Android", "Jetpack Compose", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Kotlin", "Modern Language", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Mohamed", "Android Developer ", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Ahemd", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Nada", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Ahmed", "Flutter Developer", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Flutter", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-        ListItem("Compose", "Declarative UI", R.drawable.ic_launcher_background,"Person"),
-    )
+
+    private val productsState = mutableStateOf<List<Product>>(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        startWorker()
+        observeWorker()
+
         setContent {
-            MyLazyList()
+            MyLazyList(productsState.value)
         }
     }
+
+    private fun startWorker() {
+        val request = OneTimeWorkRequestBuilder<ProductWorker>()
+            .addTag("ProductWorker")
+            .build()
+
+        WorkManager.getInstance(this).enqueue(request)
+    }
+
+    private fun observeWorker() {
+        WorkManager.getInstance(this)
+            .getWorkInfosByTagLiveData("ProductWorker")
+            .observe(this) { workInfos ->
+                val data = workInfos.firstOrNull()?.outputData?.getString("products")
+                data?.let {
+                    val type = object : TypeToken<List<Product>>() {}.type
+                    val products: List<Product> = Gson().fromJson(it, type)
+                    productsState.value = products
+                }
+            }
+    }
+
     @Composable
-    fun MyLazyList() {
+    fun MyLazyList(products: List<Product>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(items) { item ->
-                ListRow(item)
+            items(products) { product ->
+                ListRow(product)
             }
         }
     }
 
+    @OptIn(ExperimentalGlideComposeApi::class)
     @Composable
-    fun ListRow(item: ListItem) {
+    fun ListRow(product: Product) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(22.dp).clickable(
+                    onClick = {
+                        Toast.makeText(this, product.title, Toast.LENGTH_SHORT).show()
+                    }
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Image(
-                painter = painterResource(id = item.imageRes),
-                contentDescription = item.contentDescription,
+            GlideImage(
+                model = product.thumbnail,
+                contentDescription = product.title,
                 modifier = Modifier
                     .size(60.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -87,27 +113,14 @@ class MainActivity : ComponentActivity() {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(modifier = Modifier.clickable(
-                onClick={
-                 Toast.makeText(this@MainActivity,"you clicked ${item.title}",Toast.LENGTH_SHORT).show()
-                }
-            )) {
+            Column {
+                Text(text = product.title)
                 Text(
-                    text = item.title,
-                    modifier = Modifier.padding(bottom = 4.dp)
-                )
-                Text(
-                    text = item.subtitle,
+                    text = product.description,
                     color = Color.Gray
                 )
             }
         }
-    }
-    @Preview(showBackground = true)
-    @Composable
-
-    fun PreviewMyLazyList() {
-        MyLazyList()
     }
 }
 
