@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -34,11 +35,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+
     buildFeatures {
         compose = true
+    }
+}
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
 }
 
@@ -59,35 +63,38 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation ("androidx.work:work-runtime-ktx:2.9.0")
+//    implementation ("androidx.work:work-runtime-ktx:2.9.0")
+//
+//    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+//
+//    implementation ("com.github.bumptech.glide:glide:4.16.0")
+//    implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
+//   // kapt ("com.github.bumptech.glide:compiler:4.16.0")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
-   // kapt ("com.github.bumptech.glide:compiler:4.16.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+//// Retrofit
+//    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+//
+//// Lifecycle
+//    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
+//    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+//    //Coroutines Dependencies
+//    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+//    //Retrofit
+//    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+//    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+////GSON
+//    implementation("com.google.code.gson:gson:2.10.1")
+////Room
+//    implementation ("androidx.room:room-ktx:2.6.1")
+//            implementation ("androidx.room:room-runtime:2.6.1")
+//            ksp ("androidx.room:room-compiler:2.6.1")
 
-
-// Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-// Lifecycle
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
-    //Coroutines Dependencies
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-    //Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-//GSON
-    implementation("com.google.code.gson:gson:2.10.1")
-//Room
-    implementation ("androidx.room:room-ktx:2.6.1")
-            implementation ("androidx.room:room-runtime:2.6.1")
-            ksp ("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.navigation:navigation-compose:2.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 }
